@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios"
 import Header from "../../components/Header";
 
 export default function SignUp() {
@@ -9,15 +10,15 @@ export default function SignUp() {
     const navigate = useNavigate()
 
     function handleForm(e) {
-        setForm({ ...form, [e.target.name]: [e.target.value] })
+        setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    function setImagem () {
+    function setImagem() {
         const imageURL = prompt("Cole o link da imagem")
         setImage(imageURL)
     }
 
-    function signUp(e) {
+    async function signUp(e) {
         e.preventDefault()
         const body = {
             name: form.name,
@@ -25,8 +26,13 @@ export default function SignUp() {
             password: form.password,
             image
         }
-        console.log(body)
-        navigate("/")
+        try {
+            await axios.post("http://localhost:5956/sign-up", body)
+            navigate("/")
+            console.log(body)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -63,8 +69,8 @@ export default function SignUp() {
                         onChange={handleForm}
                         required />
                 </div>
-                <Circle onClick={setImagem}>
-                    Enviar
+                <Circle onClick={setImagem} image={image} required>
+                    {image ? <img src={image} /> : "Enviar"}
                 </Circle>
                 <h4>Foto de perfil</h4>
                 <span>
@@ -140,15 +146,19 @@ const Form = styled.form`
 
 const Circle = styled.div`
     color: #979797;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100px;
     height: 100px;
     border-radius: 50%;
     box-shadow: 2px 12px 28px -5px rgba(0,0,0,0.75);
     margin: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     cursor: pointer;
+    img {
+        width: 100%;
+        border-radius: 50%;
+    }
 `
 
 const LinkStyle = styled(Link)`
