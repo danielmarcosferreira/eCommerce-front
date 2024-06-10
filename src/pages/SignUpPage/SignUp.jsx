@@ -3,51 +3,73 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Header from "../../components/Header";
 
-export default function SignIn() {
-    const [form, setForm] = useState({email: "", password: ""})
+export default function SignUp() {
+    const [form, setForm] = useState({ name: "", email: "", password: "" })
+    const [image, setImage] = useState("")
     const navigate = useNavigate()
 
     function handleForm(e) {
-        setForm({...form, [e.target.name]: [e.target.value]})
+        setForm({ ...form, [e.target.name]: [e.target.value] })
     }
 
-    function login (e) {
+    function setImagem () {
+        const imageURL = prompt("Cole o link da imagem")
+        setImage(imageURL)
+    }
+
+    function signUp(e) {
         e.preventDefault()
         const body = {
+            name: form.name,
             email: form.email,
-            password: form.password
+            password: form.password,
+            image
         }
         console.log(body)
+        navigate("/")
     }
 
     return (
         <SignInContainer>
             <Header />
-            <Form onSubmit={login}>
+            <Form onSubmit={signUp}>
+                <div>
+                    <p>Nome</p>
+                    <input
+                        type="name"
+                        name="name"
+                        placeholder="Digite seu Nome"
+                        value={form.name}
+                        onChange={handleForm}
+                        required />
+                </div>
                 <div>
                     <p>E-mail</p>
                     <input
                         type="email"
                         name="email"
-                        placeholder="Digite seu Email" 
+                        placeholder="Digite seu Email"
                         value={form.email}
                         onChange={handleForm}
-                        required/>
+                        required />
                 </div>
                 <div>
                     <p>Password</p>
                     <input
                         type="password"
                         name="password"
-                        placeholder="Digite sua senha" 
+                        placeholder="Digite sua senha"
                         value={form.password}
                         onChange={handleForm}
-                        required/>
+                        required />
                 </div>
-
+                <Circle onClick={setImagem}>
+                    Enviar
+                </Circle>
+                <h4>Foto de perfil</h4>
                 <span>
-                    <button type="submit">Entrar</button>
-                    <p>Não tem conta? <LinkStyle onClick={() => navigate("/sign-up")}>Cadastre-se</LinkStyle></p>
+                    <button type="submit">Cadastrar</button>
+                    <p>Já tem conta? <LinkStyle onClick={() => navigate("/")}>Entre</LinkStyle></p>
                 </span>
             </Form>
         </SignInContainer>
@@ -55,7 +77,7 @@ export default function SignIn() {
 }
 
 const SignInContainer = styled.div`
-    height: 90vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,11 +134,21 @@ const Form = styled.form`
         }
         p {
             text-align: center;
-            span {
-
-            }
         }
     }
+`
+
+const Circle = styled.div`
+    color: #979797;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    box-shadow: 2px 12px 28px -5px rgba(0,0,0,0.75);
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 `
 
 const LinkStyle = styled(Link)`
