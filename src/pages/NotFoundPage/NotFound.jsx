@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
 export default function NotFoundPage() {
+    const navigate = useNavigate()
     return (
         <ContainerError>
             <div>404 Not Found</div>
-            <Link to={"/"}>Home</Link>
+            <Link onClick={() => navigate("/")}>Home</Link>
         </ContainerError>
     )
 }

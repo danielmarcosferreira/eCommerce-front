@@ -1,23 +1,39 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import Header from "../../components/Header";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function SignIn() {
     const [form, setForm] = useState({email: "", password: ""})
+    const {setToken} = useContext(AuthContext)
     const navigate = useNavigate()
 
     function handleForm(e) {
-        setForm({...form, [e.target.name]: [e.target.value]})
+        setForm({...form, [e.target.name]: e.target.value})
     }
 
-    function login (e) {
+    // useEffect(() => {
+    //     if (localStorage.getItem("user")) {
+    //         navigate("/home")
+    //     }
+    // }, [navigate])
+
+    async function login (e) {
         e.preventDefault()
         const body = {
             email: form.email,
             password: form.password
         }
-        console.log(body)
+        try {
+            const resp = await axios.post("http://localhost:5956/sign-in", body)
+            localStorage.setItem(`user`, JSON.stringify(resp.data))
+            const newToken = resp.data.token
+            setToken(newToken)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
