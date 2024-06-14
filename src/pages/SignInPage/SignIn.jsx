@@ -31,6 +31,7 @@ export default function SignIn() {
             localStorage.setItem(`user`, JSON.stringify(resp.data))
             const newToken = resp.data.token
             setToken(newToken)
+            navigate("/home")
         } catch (err) {
             console.log(err)
         }
@@ -40,6 +41,7 @@ export default function SignIn() {
         <SignInContainer>
             <Header />
             <Form onSubmit={login}>
+                <h1>Josi's Restaurant</h1>
                 <div>
                     <p>E-mail</p>
                     <input
@@ -66,35 +68,48 @@ export default function SignIn() {
                     <p>Não tem conta? <LinkStyle onClick={() => navigate("/sign-up")}>Cadastre-se</LinkStyle></p>
                 </span>
             </Form>
+            <Bottom></Bottom>
         </SignInContainer>
     )
 }
 
 const SignInContainer = styled.div`
-    height: 90vh;
+    height: 95vh;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     position: relative;
+    padding: 0 20px;
 `
 
 const Form = styled.form`
-    font-family: Roboto;
-    width: 70%;
+    background-color: #F26063;
+    font-family: "Source Sans 3", sans-serif;
+    width:100%;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    h1 {
+        font-size: 47px;
+        font-weight: 500;
+        width: 100%;
+        margin: 40px;
+        text-align: center;
+    }
     p {
         font-size: 20px;
+        font-weight: bold;
         text-align: start;
         margin-bottom: 10px;
         padding-left: 5px;
     }
     input {
-        width: 350px;
+        width: 300px;
         height: 40px;
         margin-bottom: 20px;
         border-radius: 15px;
@@ -109,8 +124,7 @@ const Form = styled.form`
     }
 
     span{
-        position: absolute;
-        bottom: 0;
+        margin-top: 25px;
         button {
             background-color:#D00303;
             color: white;
@@ -128,9 +142,7 @@ const Form = styled.form`
         }
         p {
             text-align: center;
-            span {
-
-            }
+            margin-bottom: 30px;
         }
     }
 `
@@ -141,4 +153,12 @@ const LinkStyle = styled(Link)`
     &:hover{
         text-decoration: underline;
     }
+`
+
+const Bottom = styled.div`
+    background-color: #EE3135;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    bottom: 0;
 `
